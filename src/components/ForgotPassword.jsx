@@ -1,5 +1,4 @@
 import { useState } from "react";
-import "../components/login.css";
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState("");
@@ -59,35 +58,43 @@ export default function ForgotPassword() {
   };
 
   return (
-    <div className="container">
-      <div className="box">
-        {error && <p className="error">{error}</p>}
-        {success && <p className="success">{success}</p>}
+    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+      <div className="w-full max-w-md p-6 bg-white rounded-lg shadow-lg">
+        {error && <p className="mb-3 text-sm text-red-500">{error}</p>}
+        {success && <p className="mb-3 text-sm text-green-500">{success}</p>}
 
         {step === "email" && (
           <>
-            <h2>Forgot Password</h2>
-            <p>Please enter your email to reset your password.</p>
-            <form onSubmit={handleReset}>
-              <label>Email</label>
+            <h2 className="text-2xl font-bold text-center text-gray-700">Forgot Password</h2>
+            <p className="mt-2 text-gray-600 text-center">Please enter your email to reset your password.</p>
+            <form onSubmit={handleReset} className="mt-4">
+              <label className="block text-gray-700">Email</label>
               <input
                 type="email"
                 placeholder="Enter your email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
+                className="w-full px-4 py-2 mt-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
               />
-              <button type="submit" className="btn">Reset Password</button>
+              <button
+                type="submit"
+                className="w-full px-6 py-2 mt-4 text-white bg-blue-600 rounded-lg hover:bg-blue-500 focus:outline-none focus:ring focus:ring-blue-300"
+              >
+                Reset Password
+              </button>
             </form>
           </>
         )}
 
         {step === "otp" && (
           <>
-            <h2>Check your email</h2>
-            <p>We sent a reset link to {email}. Enter the 5-digit code mentioned in the email.</p>
-            <form onSubmit={handleVerify}>
-              <div className="otp-container">
+            <h2 className="text-2xl font-bold text-center text-gray-700">Check Your Email</h2>
+            <p className="mt-2 text-gray-600 text-center">
+              We sent a reset link to <span className="font-semibold">{email}</span>. Enter the 5-digit code.
+            </p>
+            <form onSubmit={handleVerify} className="mt-4">
+              <div className="flex justify-between space-x-2">
                 {otp.map((digit, index) => (
                   <input
                     key={index}
@@ -95,28 +102,40 @@ export default function ForgotPassword() {
                     type="text"
                     maxLength="1"
                     value={digit}
+                    className="w-12 h-12 text-center text-xl border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
                     onChange={(e) => {
                       let newOtp = [...otp];
-                      if (/\d/.test(e.target.value) || e.target.value === '') {
+                      if (/\d/.test(e.target.value) || e.target.value === "") {
                         newOtp[index] = e.target.value;
                         setOtp(newOtp);
-                        if (e.target.value !== '' && index < otp.length - 1) {
+                        if (e.target.value !== "" && index < otp.length - 1) {
                           document.getElementById(`otp-${index + 1}`).focus();
                         }
                       }
                     }}
                     onKeyDown={(e) => {
-                      if (!/[\d]/.test(e.key) && e.key !== "Backspace" && e.key !== "ArrowLeft" && e.key !== "ArrowRight") {
+                      if (!/[\d]/.test(e.key) && e.key !== "Backspace") {
                         e.preventDefault();
                       }
                     }}
                   />
                 ))}
               </div>
-              <button type="submit" className="btn btn-verify">Verify Code</button>
-              <p>
-                Haven’t got the email yet? {" "}
-                <button type="button" onClick={handleResendEmail} className="link">Resend email</button>
+              <button
+                type="submit"
+                className="w-full px-6 py-2 mt-4 text-white bg-blue-600 rounded-lg hover:bg-blue-500 focus:outline-none focus:ring focus:ring-blue-300"
+              >
+                Verify Code
+              </button>
+              <p className="mt-3 text-center text-gray-600">
+                Haven’t received the email?{" "}
+                <button
+                  type="button"
+                  onClick={handleResendEmail}
+                  className="text-blue-600 hover:underline"
+                >
+                  Resend email
+                </button>
               </p>
             </form>
           </>
@@ -124,26 +143,35 @@ export default function ForgotPassword() {
 
         {step === "reset" && (
           <>
-            <h2>Set a new password</h2>
-            <p>Create a new password. Ensure it differs from previous ones for security.</p>
-            <form onSubmit={handlePasswordReset}>
-              <label>Password</label>
+            <h2 className="text-2xl font-bold text-center text-gray-700">Set a New Password</h2>
+            <p className="mt-2 text-gray-600 text-center">Ensure it is different from previous ones.</p>
+            <form onSubmit={handlePasswordReset} className="mt-4">
+              <label className="block text-gray-700">New Password</label>
               <input
                 type="password"
-                placeholder="Enter your new password"
+                placeholder="Enter new password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
+                className="w-full px-4 py-2 mt-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
               />
-              <label>Confirm Password</label>
+
+              <label className="block mt-3 text-gray-700">Confirm Password</label>
               <input
                 type="password"
-                placeholder="Re-enter password"
+                placeholder="Re-enter new password"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 required
+                className="w-full px-4 py-2 mt-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
               />
-              <button type="submit" className="btn btn-verify">Confirm</button>
+
+              <button
+                type="submit"
+                className="w-full px-6 py-2 mt-4 text-white bg-blue-600 rounded-lg hover:bg-blue-500 focus:outline-none focus:ring focus:ring-blue-300"
+              >
+                Confirm
+              </button>
             </form>
           </>
         )}
